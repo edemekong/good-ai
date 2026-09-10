@@ -9,7 +9,7 @@ connects to local MCP servers through `config.toml`.
 Install Good-AI and configure Codex in one command:
 
 ```bash
-npx --yes @thinkinteltech/good-ai install
+npx @thinkinteltech/good-ai install
 ```
 
 For a persistent `good-ai` command, install it globally first:

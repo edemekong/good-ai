@@ -17,8 +17,8 @@ local persistence, search, retrieval, and reuse feedback.
 Requirements: Node.js 20+ and an MCP-capable AI client.
 
 ```bash
-npx --yes @thinkinteltech/good-ai install
-npx --yes @thinkinteltech/good-ai doctor
+npx @thinkinteltech/good-ai install
+npx @thinkinteltech/good-ai doctor
 ```
 
 The installer creates `~/.good-ai`, initializes SQLite, installs the portable

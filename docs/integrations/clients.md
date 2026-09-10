@@ -39,8 +39,8 @@ the configuration should be shared with a repository team.
 ## One-command setup
 
 ```bash
-npx --yes @thinkinteltech/good-ai install
-npx --yes @thinkinteltech/good-ai doctor
+npx @thinkinteltech/good-ai install
+npx @thinkinteltech/good-ai doctor
 ```
 
 For repeated CLI use, install the package globally and run `good-ai` directly:
