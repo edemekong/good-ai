@@ -6,18 +6,23 @@ connects to local MCP servers through `config.toml`.
 
 ## Install
 
-Install the CLI so the `good-ai` command is available to Codex:
+Install Good-AI and configure Codex in one command:
+
+```bash
+npx --yes @thinkinteltech/good-ai install
+```
+
+For a persistent `good-ai` command, install it globally first:
 
 ```bash
 npm install --global @thinkinteltech/good-ai
-mkdir -p ~/.codex
 good-ai install
 ```
 
 The installer will:
 
 1. Create `~/.good-ai` and the local SQLite database.
-2. Install the skill at `~/.agents/skills/good-ai/SKILL.md`.
+2. Install the portable skill at `~/.agents/skills/good-ai/SKILL.md`.
 3. Add the local server to `~/.codex/config.toml`:
 
 ```toml

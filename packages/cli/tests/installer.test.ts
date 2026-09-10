@@ -6,9 +6,10 @@ import {
   writeFileSync,
 } from "node:fs";
 import { tmpdir } from "node:os";
-import { join } from "node:path";
+import { dirname, join } from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
 import { installGoodAi } from "../src/installer.js";
+import { getVsCodeMcpConfigPath } from "../src/integrations/vscode.js";
 
 const temporaryDirectories: string[] = [];
 
@@ -63,6 +64,47 @@ describe("Good-AI installer", () => {
       reason: "Existing good-ai configuration preserved.",
     });
     expect(JSON.parse(readFileSync(configPath, "utf8"))).toEqual(updated);
+  });
+
+  it("installs the skill into detected client skill roots", () => {
+    const userHome = mkdtempSync(join(tmpdir(), "good-ai-install-test-"));
+    temporaryDirectories.push(userHome);
+    mkdirSync(join(userHome, ".cursor"), { recursive: true });
+    mkdirSync(join(userHome, ".claude"), { recursive: true });
+    mkdirSync(join(userHome, ".copilot"), { recursive: true });
+
+    const report = installGoodAi({ userHome });
+
+    expect(report.skillPaths).toHaveLength(4);
+    expect(report.skills.map((skill) => skill.name)).toEqual([
+      "Agent Skills (Codex and VS Code)",
+      "Cursor",
+      "Claude Code",
+      "VS Code / Copilot",
+    ]);
+    for (const path of report.skillPaths) {
+      expect(readFileSync(path, "utf8")).toContain("name: good-ai");
+    }
+  });
+
+  it("creates a VS Code user-profile MCP config with its native schema", () => {
+    const userHome = mkdtempSync(join(tmpdir(), "good-ai-install-test-"));
+    temporaryDirectories.push(userHome);
+    const profilePath = dirname(getVsCodeMcpConfigPath(userHome));
+    mkdirSync(profilePath, { recursive: true });
+
+    const report = installGoodAi({ userHome });
+    const vsCode = report.clients.find((client) => client.name === "VS Code");
+
+    expect(vsCode).toMatchObject({ detected: true, registered: true });
+    const config = JSON.parse(
+      readFileSync(getVsCodeMcpConfigPath(userHome), "utf8"),
+    );
+    expect(config.servers["good-ai"]).toEqual({
+      type: "stdio",
+      command: "good-ai",
+      args: ["mcp"],
+    });
   });
 
   it("registers Codex in TOML and preserves the entry on rerun", () => {

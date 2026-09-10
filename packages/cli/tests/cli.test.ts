@@ -6,6 +6,7 @@ import { afterEach, describe, expect, it } from "vitest";
 import {
   createProgram,
   isCliEntrypoint,
+  resolveMcpCommand,
   type CliOutput,
 } from "../src/index.js";
 
@@ -34,6 +35,19 @@ describe("good-ai CLI", () => {
     symlinkSync(modulePath, link);
 
     expect(isCliEntrypoint(link, pathToFileURL(modulePath).href)).toBe(true);
+  });
+
+  it("resolves the real executable for MCP client configuration", () => {
+    const home = mkdtempSync(join(tmpdir(), "good-ai-cli-test-"));
+    temporaryDirectories.push(home);
+    const link = join(home, "good-ai");
+    const modulePath = fileURLToPath(
+      new URL("../src/index.ts", import.meta.url),
+    );
+    symlinkSync(modulePath, link);
+
+    expect(resolveMcpCommand(link)).toBe(modulePath);
+    expect(resolveMcpCommand(join(home, "missing-good-ai"))).toBe("good-ai");
   });
 
   it("initializes and reports local readiness", async () => {

@@ -30,7 +30,7 @@ export function createProgram(output: CliOutput = consoleOutput): Command {
   program
     .name("good-ai")
     .description("A local-first memory layer for successful AI interactions.")
-    .version("0.1.2")
+    .version("0.1.3")
     .option("--home <path>", "Override the Good-AI home directory")
     .option("--json", "Print machine-readable JSON where supported");
 
@@ -39,7 +39,10 @@ export function createProgram(output: CliOutput = consoleOutput): Command {
     .description("Initialize Good-AI and register supported local clients")
     .action(async (_options, command) => {
       const globalOptions = command.optsWithGlobals() as CliOptions;
-      const report = installGoodAi({ userHome: globalOptions.home });
+      const report = installGoodAi({
+        userHome: globalOptions.home,
+        command: resolveMcpCommand(),
+      });
       print(report, globalOptions, output);
     });
 
@@ -209,7 +212,19 @@ export function isCliEntrypoint(
     return false;
   }
 
-  return realpathSync(entrypointPath) === fileURLToPath(moduleUrl);
+  try {
+    return realpathSync(entrypointPath) === fileURLToPath(moduleUrl);
+  } catch {
+    return false;
+  }
+}
+
+export function resolveMcpCommand(entrypointPath = process.argv[1]): string {
+  if (!isCliEntrypoint(entrypointPath)) {
+    return "good-ai";
+  }
+
+  return realpathSync(entrypointPath);
 }
 
 if (isCliEntrypoint(process.argv[1])) {

@@ -17,14 +17,26 @@ local persistence, search, retrieval, and reuse feedback.
 Requirements: Node.js 20+ and an MCP-capable AI client.
 
 ```bash
+npx --yes @thinkinteltech/good-ai install
+npx --yes @thinkinteltech/good-ai doctor
+```
+
+The installer creates `~/.good-ai`, initializes SQLite, installs the portable
+skill for detected AI clients, and registers the MCP server in their supported
+user configurations. Existing configuration is preserved. For a persistent
+`good-ai` command, install the package globally instead:
+
+```bash
 npm install --global @thinkinteltech/good-ai
-good-ai install
 good-ai doctor
 ```
 
-The installer creates `~/.good-ai`, initializes SQLite, writes the skill to
-`~/.agents/skills/good-ai/SKILL.md`, and registers the MCP server in detected
-supported client configurations. Existing configuration is preserved.
+The portable skill is installed at `~/.agents/skills/good-ai/SKILL.md` for
+Codex and VS Code. When detected, native copies are also installed at
+`~/.cursor/skills/good-ai/SKILL.md`, `~/.claude/skills/good-ai/SKILL.md`, and
+`~/.copilot/skills/good-ai/SKILL.md`.
+See the [client integration guide](docs/integrations/clients.md) for the
+supported skill and MCP configuration locations.
 Unsupported or invalid client configurations are reported without being
 rewritten.
 
@@ -103,6 +115,12 @@ Manual MCP configuration uses the command below:
   }
 }
 ```
+
+The installer uses the native MCP configuration format for each client. Codex
+uses `~/.codex/config.toml`, Claude Code uses the user scope in
+`~/.claude.json`, Cursor uses its user `mcp.json`, and VS Code uses the user
+profile `mcp.json`. Workspace MCP files are not modified by the global
+installer.
 
 ## Codex integration
 
