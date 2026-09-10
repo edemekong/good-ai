@@ -6,3 +6,4 @@ coverage/
 *.db
 *.db-*
 packages/cli/assets/
+/PRD.md
