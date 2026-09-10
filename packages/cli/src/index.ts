@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 
 import { Command } from "commander";
-import { pathToFileURL } from "node:url";
+import { realpathSync } from "node:fs";
+import { fileURLToPath } from "node:url";
 import {
   closeStorage,
   createExperienceService,
@@ -29,7 +30,7 @@ export function createProgram(output: CliOutput = consoleOutput): Command {
   program
     .name("good-ai")
     .description("A local-first memory layer for successful AI interactions.")
-    .version("0.1.1")
+    .version("0.1.2")
     .option("--home <path>", "Override the Good-AI home directory")
     .option("--json", "Print machine-readable JSON where supported");
 
@@ -200,10 +201,18 @@ function parseLimit(value: string): number {
   return limit;
 }
 
-if (
-  process.argv[1] &&
-  pathToFileURL(process.argv[1]).href === import.meta.url
-) {
+export function isCliEntrypoint(
+  entrypointPath: string | undefined,
+  moduleUrl = import.meta.url,
+): boolean {
+  if (!entrypointPath) {
+    return false;
+  }
+
+  return realpathSync(entrypointPath) === fileURLToPath(moduleUrl);
+}
+
+if (isCliEntrypoint(process.argv[1])) {
   await main();
 }
 

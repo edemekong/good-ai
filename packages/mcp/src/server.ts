@@ -59,7 +59,7 @@ export function createGoodAiMcpServer(
   const service = createExperienceService(storage);
   const server = new McpServer({
     name: "good-ai",
-    version: "0.1.1",
+    version: "0.1.2",
   });
 
   server.registerTool(

@@ -1,8 +1,13 @@
-import { mkdtempSync, rmSync } from "node:fs";
+import { mkdtempSync, rmSync, symlinkSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+import { fileURLToPath, pathToFileURL } from "node:url";
 import { afterEach, describe, expect, it } from "vitest";
-import { createProgram, type CliOutput } from "../src/index.js";
+import {
+  createProgram,
+  isCliEntrypoint,
+  type CliOutput,
+} from "../src/index.js";
 
 const temporaryDirectories: string[] = [];
 
@@ -19,6 +24,18 @@ function createOutput() {
 }
 
 describe("good-ai CLI", () => {
+  it("recognizes an npm bin symlink as the CLI entrypoint", () => {
+    const home = mkdtempSync(join(tmpdir(), "good-ai-cli-test-"));
+    temporaryDirectories.push(home);
+    const link = join(home, "good-ai");
+    const modulePath = fileURLToPath(
+      new URL("../src/index.ts", import.meta.url),
+    );
+    symlinkSync(modulePath, link);
+
+    expect(isCliEntrypoint(link, pathToFileURL(modulePath).href)).toBe(true);
+  });
+
   it("initializes and reports local readiness", async () => {
     const home = mkdtempSync(join(tmpdir(), "good-ai-cli-test-"));
     temporaryDirectories.push(home);
