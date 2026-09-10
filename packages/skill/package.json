@@ -1,0 +1,13 @@
+{
+  "name": "@good-ai/skill",
+  "version": "0.1.0",
+  "files": [
+    "GOOD_AI.md"
+  ],
+  "scripts": {
+    "build": "node -e \"console.log('Skill package contains GOOD_AI.md')\"",
+    "clean": "true",
+    "test": "vitest run src",
+    "typecheck": "node -e \"process.exit(0)\""
+  }
+}

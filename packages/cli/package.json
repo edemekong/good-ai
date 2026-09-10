@@ -1,0 +1,35 @@
+{
+  "name": "good-ai",
+  "version": "0.1.0",
+  "files": [
+    "dist",
+    "assets"
+  ],
+  "type": "module",
+  "bin": {
+    "good-ai": "./dist/index.js"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsup src/index.ts --format esm --dts && node scripts/copy-skill.mjs",
+    "clean": "rm -rf dist",
+    "dev": "tsx src/index.ts",
+    "test": "vitest run --passWithNoTests",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@good-ai/core": "workspace:*",
+    "@good-ai/mcp": "workspace:*",
+    "commander": "^14.0.0"
+  },
+  "devDependencies": {
+    "tsx": "^4.20.0"
+  }
+}
