@@ -1,5 +1,5 @@
 import type Database from "better-sqlite3";
-import type { Experience } from "./index.js";
+import type { Experience } from "../models/experience.js";
 
 export interface ExperienceSearchResult {
   id: string;
@@ -15,37 +15,44 @@ export function upsertExperienceSearch(
   experience: Experience,
 ): void {
   sqlite.transaction(() => {
-    removeExperienceSearch(sqlite, experience.id);
-    sqlite
-      .prepare(
-        `INSERT INTO experiences_fts (
-          experience_id,
-          task_title,
-          category,
-          intent,
-          tags,
-          approach,
-          instructions,
-          constraints,
-          context,
-          tools
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      )
-      .run(
-        experience.id,
-        experience.task.title,
-        experience.task.category,
-        experience.task.intent,
-        experience.task.tags.join(" "),
-        experience.recipe.approach,
-        experience.recipe.instructions.join(" "),
-        experience.recipe.constraints.join(" "),
-        experience.recipe.context.join(" "),
-        experience.recipe.tools
-          .map((tool) => `${tool.name} ${tool.purpose}`)
-          .join(" "),
-      );
+    upsertExperienceSearchInTransaction(sqlite, experience);
   })();
+}
+
+export function upsertExperienceSearchInTransaction(
+  sqlite: Database.Database,
+  experience: Experience,
+): void {
+  removeExperienceSearch(sqlite, experience.id);
+  sqlite
+    .prepare(
+      `INSERT INTO experiences_fts (
+        experience_id,
+        task_title,
+        category,
+        intent,
+        tags,
+        approach,
+        instructions,
+        constraints,
+        context,
+        tools
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    )
+    .run(
+      experience.id,
+      experience.task.title,
+      experience.task.category,
+      experience.task.intent,
+      experience.task.tags.join(" "),
+      experience.recipe.approach,
+      experience.recipe.instructions.join(" "),
+      experience.recipe.constraints.join(" "),
+      experience.recipe.context.join(" "),
+      experience.recipe.tools
+        .map((tool) => `${tool.name} ${tool.purpose}`)
+        .join(" "),
+    );
 }
 
 export function removeExperienceSearch(

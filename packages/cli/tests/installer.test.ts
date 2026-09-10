@@ -8,7 +8,7 @@ import {
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
-import { installGoodAi } from "./installer.js";
+import { installGoodAi } from "../src/installer.js";
 
 const temporaryDirectories: string[] = [];
 

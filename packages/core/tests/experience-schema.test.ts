@@ -3,7 +3,7 @@ import {
   CreateExperienceInputSchema,
   ExperienceSchema,
   createExperience,
-} from "./index.js";
+} from "../src/index.js";
 
 const validInput = {
   task: {

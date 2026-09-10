@@ -4,7 +4,7 @@ import { mkdtempSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
-import { createGoodAiMcpServer } from "./server.js";
+import { createGoodAiMcpServer } from "../src/server.js";
 
 const temporaryDirectories: string[] = [];
 

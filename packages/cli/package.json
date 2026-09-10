@@ -21,8 +21,9 @@
     "build": "tsup src/index.ts --format esm --dts && node scripts/copy-skill.mjs",
     "clean": "rm -rf dist",
     "dev": "tsx src/index.ts",
-    "test": "vitest run --passWithNoTests",
-    "typecheck": "tsc --noEmit"
+    "test": "vitest run tests --passWithNoTests",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "typecheck:tests": "tsc --noEmit -p tsconfig.test.json"
   },
   "dependencies": {
     "@good-ai/core": "workspace:*",
@@ -30,6 +31,10 @@
     "commander": "^14.0.0"
   },
   "devDependencies": {
-    "tsx": "^4.20.0"
+    "@types/node": "catalog:",
+    "tsup": "catalog:",
+    "tsx": "^4.20.0",
+    "typescript": "catalog:",
+    "vitest": "catalog:"
   }
 }

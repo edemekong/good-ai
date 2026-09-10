@@ -21,13 +21,15 @@
     "format": "pnpm exec prettier --write .",
     "format:check": "pnpm exec prettier --check .",
     "test": "pnpm -r test",
-    "typecheck": "pnpm -r typecheck"
+    "typecheck": "pnpm -r typecheck",
+    "typecheck:tests": "pnpm -r typecheck:tests",
+    "validate": "pnpm format:check && pnpm typecheck && pnpm typecheck:tests && pnpm test && pnpm build"
   },
   "devDependencies": {
-    "@types/node": "^22.0.0",
-    "prettier": "^3.6.2",
-    "tsup": "^8.5.0",
-    "typescript": "^5.9.2",
-    "vitest": "^3.2.4"
+    "@types/node": "catalog:",
+    "prettier": "catalog:",
+    "tsup": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "catalog:"
   }
 }

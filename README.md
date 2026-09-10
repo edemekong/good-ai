@@ -142,11 +142,32 @@ corepack pnpm format:check
 The workspace contains:
 
 ```text
-packages/core   Experience schema, SQLite storage, FTS5, service, privacy
-packages/mcp    MCP server and tool registration
-packages/cli    good-ai CLI, installer, and packaging
-packages/skill  GOOD_AI.md behavioral instructions
+packages/core/
+  src/models       Domain-facing TypeScript types
+  src/schemas      Runtime Zod schemas and validation contracts
+  src/services     Experience factory and persistence service
+  src/search       SQLite FTS5 indexing and query helpers
+  src/privacy      Sensitive-data checks
+  src/storage      Configuration, migrations, and Drizzle schema
+  src/utils        Small shared utilities
+  tests            Core behavior and storage tests
+packages/mcp/
+  src              MCP server and deterministic tool registration
+  tests            MCP lifecycle and acceptance tests
+packages/cli/
+  src              CLI commands and installer
+  tests            CLI and installer tests
+packages/skill/
+  GOOD_AI.md       Behavioral instructions installed for host AI clients
+  tests            Skill contract tests
 ```
+
+Production code and tests intentionally live in separate trees. Each package
+has a production typecheck and a test typecheck so contributors can validate
+both the published source and its test fixtures independently.
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for the development workflow, package
+boundaries, testing expectations, and pull request checklist.
 
 The first milestone is the local loop: install, record one successful
 experience, search it in a fresh task, retrieve it, reuse it, and record

@@ -4,7 +4,7 @@ import { mkdtempSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
-import { createGoodAiMcpServer } from "./server.js";
+import { createGoodAiMcpServer } from "../src/server.js";
 
 const temporaryDirectories: string[] = [];
 
@@ -93,6 +93,15 @@ describe("Good-AI MCP server", () => {
         }
       ).success.reproduction.successes,
     ).toBe(1);
+
+    const missing = await client.callTool({
+      name: "good_ai_get",
+      arguments: { id: "exp_missing" },
+    });
+    expect(missing.isError).toBe(true);
+    expect(readToolJson(missing)).toEqual({
+      error: "Experience not found: exp_missing",
+    });
 
     await client.close();
     await mcp.server.close();

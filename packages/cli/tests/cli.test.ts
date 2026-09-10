@@ -2,7 +2,7 @@ import { mkdtempSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
-import { createProgram, type CliOutput } from "./index.js";
+import { createProgram, type CliOutput } from "../src/index.js";
 
 const temporaryDirectories: string[] = [];
 

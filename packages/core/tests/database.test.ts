@@ -3,8 +3,8 @@ import { mkdtempSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
-import { loadOrCreateConfig } from "./config.js";
-import { openDatabase } from "./database.js";
+import { loadOrCreateConfig } from "../src/storage/config.js";
+import { openDatabase } from "../src/storage/database.js";
 
 const temporaryDirectories: string[] = [];
 

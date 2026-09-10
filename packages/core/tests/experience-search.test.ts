@@ -2,13 +2,13 @@ import { mkdtempSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
-import { createExperience, openDatabase } from "./index.js";
+import { createExperience, openDatabase } from "../src/index.js";
 import {
   removeExperienceSearch,
   searchExperiences,
   toFtsMatchQuery,
   upsertExperienceSearch,
-} from "./search.js";
+} from "../src/search/experience-search.js";
 
 const temporaryDirectories: string[] = [];
 

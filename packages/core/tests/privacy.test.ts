@@ -1,5 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { SensitiveDataError, assertNoSensitiveSecrets } from "./privacy.js";
+import {
+  SensitiveDataError,
+  assertNoSensitiveSecrets,
+} from "../src/privacy/sensitive-data.js";
 
 describe("privacy checks", () => {
   it("rejects common credential and private-key patterns", () => {

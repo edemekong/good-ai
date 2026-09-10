@@ -70,7 +70,7 @@ export function createGoodAiMcpServer(
         "Store a reusable, structured lesson from a successful interaction.",
       inputSchema: CreateExperienceInputSchema,
     },
-    async (input) => toolResult(service.record(input)),
+    async (input) => safeTool(() => service.record(input)),
   );
 
   server.registerTool(
@@ -82,7 +82,7 @@ export function createGoodAiMcpServer(
       inputSchema: SearchInputSchema,
     },
     async ({ query, limit }) =>
-      toolResult({ experiences: service.search(query, limit) }),
+      safeTool(() => ({ experiences: service.search(query, limit) })),
   );
 
   server.registerTool(
@@ -92,7 +92,7 @@ export function createGoodAiMcpServer(
       description: "Retrieve the complete structured experience by ID.",
       inputSchema: IdInputSchema,
     },
-    async ({ id }) => toolResult(service.get(id)),
+    async ({ id }) => safeTool(() => service.get(id)),
   );
 
   server.registerTool(
@@ -104,7 +104,7 @@ export function createGoodAiMcpServer(
       inputSchema: FeedbackInputSchema,
     },
     async ({ experienceId, outcome }) =>
-      toolResult(service.feedback(experienceId, outcome)),
+      safeTool(() => service.feedback(experienceId, outcome)),
   );
 
   server.registerTool(
@@ -114,7 +114,7 @@ export function createGoodAiMcpServer(
       description: "Correct or refine an existing structured experience.",
       inputSchema: UpdateInputSchema,
     },
-    async ({ id, ...input }) => toolResult(service.update(id, input)),
+    async ({ id, ...input }) => safeTool(() => service.update(id, input)),
   );
 
   server.registerTool(
@@ -125,8 +125,10 @@ export function createGoodAiMcpServer(
       inputSchema: IdInputSchema,
     },
     async ({ id }) => {
-      service.delete(id);
-      return toolResult({ id, deleted: true });
+      return safeTool(() => {
+        service.delete(id);
+        return { id, deleted: true };
+      });
     },
   );
 
@@ -152,6 +154,26 @@ function toolResult(value: unknown): CallToolResult {
     ],
     structuredContent: toStructuredContent(value),
   };
+}
+
+async function safeTool(action: () => unknown): Promise<CallToolResult> {
+  try {
+    return toolResult(await action());
+  } catch (error) {
+    return {
+      content: [
+        {
+          type: "text",
+          text: JSON.stringify({ error: errorMessage(error) }),
+        },
+      ],
+      isError: true,
+    };
+  }
+}
+
+function errorMessage(error: unknown): string {
+  return error instanceof Error ? error.message : "Good-AI tool failed";
 }
 
 function toStructuredContent(value: unknown): Record<string, unknown> {

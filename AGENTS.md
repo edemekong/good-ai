@@ -30,6 +30,14 @@ version.
 - Run the project’s available validation commands before handing off work, and
   report any commands that could not be run.
 - Keep documentation and configuration examples synchronized with behavior.
+- Keep production code under each package's `src/` directory and tests under
+  that package's `tests/` directory; do not mix test files into production
+  modules.
+- Organize core code by responsibility (`models`, `schemas`, `services`,
+  `search`, `privacy`, `storage`, and `utils`) and import implementation
+  modules directly instead of creating circular dependencies through barrels.
+- Keep package dependencies declared in the package that uses them; shared
+  tool versions belong in the pnpm workspace catalog.
 - Use `.agents/skills/issue-execution/SKILL.md` for the one-issue-at-a-time
   GitHub workflow and `.agents/commands/` for the local issue workflow prompts.
 - Prefer dependency-safe issue order over GitHub issue-number order; ask for

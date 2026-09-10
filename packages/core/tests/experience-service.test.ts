@@ -8,7 +8,7 @@ import {
   closeStorage,
   createExperienceService,
   openDatabase,
-} from "./index.js";
+} from "../src/index.js";
 
 const temporaryDirectories: string[] = [];
 

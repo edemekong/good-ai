@@ -2,18 +2,18 @@ import type Database from "better-sqlite3";
 import {
   CreateExperienceInputSchema,
   ExperienceSchema,
-  createExperience,
-  type Experience,
-  type FeedbackOutcome,
-} from "./index.js";
+} from "../schemas/experience.js";
+import type { Experience, FeedbackOutcome } from "../models/experience.js";
+import { assertNoSensitiveSecrets } from "../privacy/sensitive-data.js";
 import {
-  searchExperiences,
-  upsertExperienceSearch,
   removeExperienceSearch,
+  searchExperiences,
   type ExperienceSearchResult,
-} from "./search.js";
-import { assertNoSensitiveSecrets } from "./privacy.js";
-import type { OpenDatabaseResult } from "./storage/database.js";
+  upsertExperienceSearchInTransaction,
+} from "../search/experience-search.js";
+import { createExperience } from "./experience-factory.js";
+import type { OpenDatabaseResult } from "../storage/database.js";
+import { nextTimestamp } from "../utils/time.js";
 
 export class ExperienceNotFoundError extends Error {
   readonly code = "EXPERIENCE_NOT_FOUND";
@@ -31,8 +31,10 @@ export class ExperienceService {
     const semanticInput = CreateExperienceInputSchema.parse(input);
     assertNoSensitiveSecrets(semanticInput);
     const experience = createExperience(semanticInput);
-    this.insert(experience);
-    upsertExperienceSearch(this.storage.sqlite, experience);
+    this.storage.sqlite.transaction(() => {
+      this.insert(experience);
+      upsertExperienceSearchInTransaction(this.storage.sqlite, experience);
+    })();
     return experience;
   }
 
@@ -71,15 +73,21 @@ export class ExperienceService {
       updatedAt: nextTimestamp(existing.updatedAt),
     });
 
-    this.replace(updated);
-    upsertExperienceSearch(this.storage.sqlite, updated);
+    this.storage.sqlite.transaction(() => {
+      this.replace(updated);
+      upsertExperienceSearchInTransaction(this.storage.sqlite, updated);
+    })();
     return updated;
   }
 
   delete(id: string): void {
     this.get(id);
-    this.storage.sqlite.prepare("DELETE FROM experiences WHERE id = ?").run(id);
-    removeExperienceSearch(this.storage.sqlite, id);
+    this.storage.sqlite.transaction(() => {
+      this.storage.sqlite
+        .prepare("DELETE FROM experiences WHERE id = ?")
+        .run(id);
+      removeExperienceSearch(this.storage.sqlite, id);
+    })();
   }
 
   feedback(id: string, outcome: FeedbackOutcome): Experience {
@@ -152,10 +160,4 @@ export function createExperienceService(
 
 export function closeStorage(storage: OpenDatabaseResult): void {
   (storage.sqlite as Database.Database).close();
-}
-
-function nextTimestamp(previous: string): string {
-  const now = Date.now();
-  const previousTime = Date.parse(previous);
-  return new Date(Math.max(now, previousTime + 1)).toISOString();
 }
