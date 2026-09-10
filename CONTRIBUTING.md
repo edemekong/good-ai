@@ -10,10 +10,10 @@ Requirements are Node.js 20+ and pnpm through Corepack:
 
 ```bash
 corepack pnpm install
+corepack pnpm build
 corepack pnpm typecheck
 corepack pnpm typecheck:tests
 corepack pnpm test
-corepack pnpm build
 corepack pnpm format:check
 ```
 

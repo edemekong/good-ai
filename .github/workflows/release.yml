@@ -30,7 +30,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Validate
-        run: pnpm typecheck && pnpm test && pnpm build
+        run: pnpm build && pnpm typecheck && pnpm test
 
       - name: Publish workspace packages
         run: pnpm publish --recursive --access public --no-git-checks

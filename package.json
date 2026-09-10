@@ -23,7 +23,7 @@
     "test": "pnpm -r test",
     "typecheck": "pnpm -r typecheck",
     "typecheck:tests": "pnpm -r typecheck:tests",
-    "validate": "pnpm format:check && pnpm typecheck && pnpm typecheck:tests && pnpm test && pnpm build"
+    "validate": "pnpm format:check && pnpm build && pnpm typecheck && pnpm typecheck:tests && pnpm test"
   },
   "devDependencies": {
     "@types/node": "catalog:",

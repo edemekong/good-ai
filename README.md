@@ -141,9 +141,9 @@ followed.
 
 ```bash
 corepack pnpm install
+corepack pnpm build
 corepack pnpm typecheck
 corepack pnpm test
-corepack pnpm build
 corepack pnpm format:check
 ```
 
