@@ -34,7 +34,7 @@ Delegated work must not expand scope, mutate unrelated files, or make external c
 
 ## GitHub workflow
 
-Use `gh` against `edemekong/good-ai` and target `master`. Check existing issues/comments before creating duplicates. Use labels and assign work consistently. Do not create new issues for ordinary implementation subtasks unless the user asks or the work is genuinely outside the active issue.
+Use `gh` against `edemekong/good-ai` and target `main`. Check existing issues/comments before creating duplicates. Use labels and assign work consistently. Do not create new issues for ordinary implementation subtasks unless the user asks or the work is genuinely outside the active issue.
 
 ## Completion checklist
 
