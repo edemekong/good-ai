@@ -72,6 +72,73 @@ describe("good-ai CLI", () => {
     });
   });
 
+  it("prints human-readable doctor output by default", async () => {
+    const home = mkdtempSync(join(tmpdir(), "good-ai-cli-test-"));
+    temporaryDirectories.push(home);
+    const { lines, output } = createOutput();
+
+    await createProgram(output).parseAsync([
+      "node",
+      "good-ai",
+      "--home",
+      home,
+      "doctor",
+    ]);
+
+    expect(lines[0]).toContain("Good-AI doctor");
+    expect(lines[0]).toContain("✓ Local storage is ready.");
+    expect(lines[0]).not.toContain('"ready"');
+  });
+
+  it("prints human-readable delete output by default", async () => {
+    const home = mkdtempSync(join(tmpdir(), "good-ai-cli-test-"));
+    temporaryDirectories.push(home);
+    const { lines, output } = createOutput();
+    const seed = createProgram(output);
+    await seed.parseAsync(["node", "good-ai", "--home", home, "doctor"]);
+
+    const { openDatabase, createExperienceService, closeStorage } =
+      await import("@thinkinteltech/core");
+    const storage = openDatabase({ userHome: home });
+    const experience = createExperienceService(storage).record({
+      task: {
+        title: "Improve the CLI",
+        category: "developer-experience",
+        intent: "human_output",
+        tags: [],
+      },
+      recipe: {
+        approach: "Use concise status messages.",
+        instructions: [],
+        constraints: [],
+        context: [],
+        tools: [],
+      },
+      environment: { client: "codex" },
+      success: {
+        confidence: 0.9,
+        signals: [
+          {
+            type: "user_confirmed_solution",
+            summary: "The user confirmed the output was useful.",
+          },
+        ],
+      },
+    });
+    closeStorage(storage);
+
+    await createProgram(output).parseAsync([
+      "node",
+      "good-ai",
+      "--home",
+      home,
+      "delete",
+      experience.id,
+    ]);
+
+    expect(lines.at(-1)).toBe(`✓ Deleted experience ${experience.id}.`);
+  });
+
   it("supports list, search, show, and delete over shared local storage", async () => {
     const home = mkdtempSync(join(tmpdir(), "good-ai-cli-test-"));
     temporaryDirectories.push(home);

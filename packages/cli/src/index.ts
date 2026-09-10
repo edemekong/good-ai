@@ -7,10 +7,18 @@ import {
   closeStorage,
   createExperienceService,
   openDatabase,
-  type Experience,
 } from "@thinkinteltech/core";
 import { startGoodAiMcpServer as startMcpServer } from "@thinkinteltech/mcp";
 import { installGoodAi } from "./installer.js";
+import {
+  printConfig,
+  printDeletedExperience,
+  printDoctorResult,
+  printExperience,
+  printExperiences,
+  printInstallReport,
+  printSearchResults,
+} from "./utils/output.js";
 
 export interface CliOptions {
   home?: string;
@@ -43,7 +51,11 @@ export function createProgram(output: CliOutput = consoleOutput): Command {
         userHome: globalOptions.home,
         command: resolveMcpCommand(),
       });
-      print(report, globalOptions, output);
+      if (globalOptions.json) {
+        printJson(report, output);
+      } else {
+        printInstallReport(report, output);
+      }
     });
 
   program
@@ -72,7 +84,11 @@ export function createProgram(output: CliOutput = consoleOutput): Command {
           mcp: "ready",
         };
       });
-      print(result, globalOptions, output);
+      if (globalOptions.json) {
+        printJson(result, output);
+      } else {
+        printDoctorResult(result, output);
+      }
     });
 
   program
@@ -83,7 +99,11 @@ export function createProgram(output: CliOutput = consoleOutput): Command {
       const experiences = withStorage(globalOptions, (storage) =>
         createExperienceService(storage).list(),
       );
-      printExperiences(experiences, globalOptions, output);
+      if (globalOptions.json) {
+        printJson(experiences, output);
+      } else {
+        printExperiences(experiences, output);
+      }
     });
 
   program
@@ -96,7 +116,11 @@ export function createProgram(output: CliOutput = consoleOutput): Command {
       const results = withStorage(globalOptions, (storage) =>
         createExperienceService(storage).search(query, limit),
       );
-      print(results, globalOptions, output);
+      if (globalOptions.json) {
+        printJson(results, output);
+      } else {
+        printSearchResults(results, query, output);
+      }
     });
 
   program
@@ -107,7 +131,11 @@ export function createProgram(output: CliOutput = consoleOutput): Command {
       const experience = withStorage(globalOptions, (storage) =>
         createExperienceService(storage).get(id),
       );
-      print(experience, globalOptions, output);
+      if (globalOptions.json) {
+        printJson(experience, output);
+      } else {
+        printExperience(experience, output);
+      }
     });
 
   program
@@ -118,7 +146,11 @@ export function createProgram(output: CliOutput = consoleOutput): Command {
       withStorage(globalOptions, (storage) => {
         createExperienceService(storage).delete(id);
       });
-      print({ id, deleted: true }, globalOptions, output);
+      if (globalOptions.json) {
+        printJson({ id, deleted: true }, output);
+      } else {
+        printDeletedExperience(id, output);
+      }
     });
 
   program
@@ -130,7 +162,11 @@ export function createProgram(output: CliOutput = consoleOutput): Command {
         ...storage.config,
         paths: storage.paths,
       }));
-      print(config, globalOptions, output);
+      if (globalOptions.json) {
+        printJson(config, output);
+      } else {
+        printConfig(config, output);
+      }
     });
 
   program
@@ -160,40 +196,8 @@ function withStorage<T>(
   }
 }
 
-function print(value: unknown, options: CliOptions, output: CliOutput): void {
-  if (options.json) {
-    output.emit(JSON.stringify(value, null, 2));
-    return;
-  }
-
-  if (Array.isArray(value)) {
-    output.emit(value.map((item) => JSON.stringify(item)).join("\n"));
-    return;
-  }
-
+function printJson(value: unknown, output: CliOutput): void {
   output.emit(JSON.stringify(value, null, 2));
-}
-
-function printExperiences(
-  experiences: Experience[],
-  options: CliOptions,
-  output: CliOutput,
-): void {
-  if (options.json) {
-    print(experiences, options, output);
-    return;
-  }
-
-  output.emit(
-    experiences.length === 0
-      ? "No experiences found."
-      : experiences
-          .map(
-            (experience) =>
-              `${experience.id}\t${experience.task.title}\t${experience.task.category}`,
-          )
-          .join("\n"),
-  );
 }
 
 function parseLimit(value: string): number {

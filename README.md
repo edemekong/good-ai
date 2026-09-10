@@ -31,6 +31,15 @@ npm install --global @thinkinteltech/good-ai
 good-ai doctor
 ```
 
+Good-AI uses human-readable status messages by default. Any install warnings
+printed before the command starts come from npm while it downloads packages,
+not from Good-AI. For quiet scripted installs, npm's warnings can be hidden
+while errors remain visible:
+
+```bash
+npx --yes --loglevel=error @thinkinteltech/good-ai install
+```
+
 The portable skill is installed at `~/.agents/skills/good-ai/SKILL.md` for
 Codex and VS Code. When detected, native copies are also installed at
 `~/.cursor/skills/good-ai/SKILL.md`, `~/.claude/skills/good-ai/SKILL.md`, and
@@ -83,8 +92,9 @@ good-ai delete <experience-id>
 good-ai config
 ```
 
-Use `--json` for machine-readable output and `--home <path>` to inspect an
-isolated Good-AI home directory. The database defaults to:
+The CLI uses human-readable status messages by default. Use `--json` for
+machine-readable output in scripts and `--home <path>` to inspect an isolated
+Good-AI home directory. The database defaults to:
 
 ```text
 ~/.good-ai/good-ai.db
