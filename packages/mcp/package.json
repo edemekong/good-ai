@@ -1,5 +1,5 @@
 {
-  "name": "@good-ai/mcp",
+  "name": "@thinkinteltech/mcp",
   "version": "0.1.0",
   "files": [
     "dist"
@@ -21,7 +21,7 @@
     "typecheck:tests": "tsc --noEmit -p tsconfig.test.json"
   },
   "dependencies": {
-    "@good-ai/core": "workspace:*",
+    "@thinkinteltech/core": "workspace:*",
     "@modelcontextprotocol/sdk": "^1.17.0",
     "zod": "catalog:"
   },

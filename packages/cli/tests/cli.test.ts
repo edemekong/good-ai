@@ -49,7 +49,7 @@ describe("good-ai CLI", () => {
     await seed.parseAsync(["node", "good-ai", "--home", home, "doctor"]);
 
     const { openDatabase, createExperienceService, closeStorage } =
-      await import("@good-ai/core");
+      await import("@thinkinteltech/core");
     const storage = openDatabase({ userHome: home });
     const experience = createExperienceService(storage).record({
       task: {

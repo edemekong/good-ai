@@ -8,4 +8,4 @@ export * from "./storage/config.js";
 export * from "./storage/database.js";
 export * from "./storage/schema.js";
 
-export const packageName = "@good-ai/core" as const;
+export const packageName = "@thinkinteltech/core" as const;

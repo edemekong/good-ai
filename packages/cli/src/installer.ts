@@ -2,7 +2,7 @@ import { copyFileSync, existsSync, mkdirSync, readFileSync } from "node:fs";
 import { homedir } from "node:os";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { closeStorage, openDatabase } from "@good-ai/core";
+import { closeStorage, openDatabase } from "@thinkinteltech/core";
 import {
   clientAdapters,
   installClient,

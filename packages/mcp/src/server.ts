@@ -8,7 +8,7 @@ import {
   openDatabase,
   type ExperienceService,
   type OpenDatabaseResult,
-} from "@good-ai/core";
+} from "@thinkinteltech/core";
 import { z } from "zod";
 
 const IdSchema = z.string().trim().min(1);

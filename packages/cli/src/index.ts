@@ -7,8 +7,8 @@ import {
   createExperienceService,
   openDatabase,
   type Experience,
-} from "@good-ai/core";
-import { startGoodAiMcpServer as startMcpServer } from "@good-ai/mcp";
+} from "@thinkinteltech/core";
+import { startGoodAiMcpServer as startMcpServer } from "@thinkinteltech/mcp";
 import { installGoodAi } from "./installer.js";
 
 export interface CliOptions {
@@ -207,4 +207,4 @@ if (
   await main();
 }
 
-export const packageName = "@good-ai/cli" as const;
+export const packageName = "good-ai" as const;

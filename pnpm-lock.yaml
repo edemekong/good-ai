@@ -47,10 +47,10 @@ importers:
 
   packages/cli:
     dependencies:
-      '@good-ai/core':
+      '@thinkinteltech/core':
         specifier: workspace:*
         version: link:../core
-      '@good-ai/mcp':
+      '@thinkinteltech/mcp':
         specifier: workspace:*
         version: link:../mcp
       commander:
@@ -103,12 +103,12 @@ importers:
 
   packages/mcp:
     dependencies:
-      '@good-ai/core':
-        specifier: workspace:*
-        version: link:../core
       '@modelcontextprotocol/sdk':
         specifier: ^1.17.0
         version: 1.30.0(zod@4.6.1)
+      '@thinkinteltech/core':
+        specifier: workspace:*
+        version: link:../core
       zod:
         specifier: 'catalog:'
         version: 4.6.1

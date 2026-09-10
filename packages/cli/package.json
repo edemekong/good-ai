@@ -26,8 +26,8 @@
     "typecheck:tests": "tsc --noEmit -p tsconfig.test.json"
   },
   "dependencies": {
-    "@good-ai/core": "workspace:*",
-    "@good-ai/mcp": "workspace:*",
+    "@thinkinteltech/core": "workspace:*",
+    "@thinkinteltech/mcp": "workspace:*",
     "commander": "^14.0.0"
   },
   "devDependencies": {

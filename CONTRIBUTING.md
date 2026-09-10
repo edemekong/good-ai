@@ -20,8 +20,8 @@ corepack pnpm format:check
 Run the command that matches the area you changed when iterating:
 
 ```bash
-corepack pnpm --filter @good-ai/core test
-corepack pnpm --filter @good-ai/mcp test
+corepack pnpm --filter @thinkinteltech/core test
+corepack pnpm --filter @thinkinteltech/mcp test
 corepack pnpm --filter good-ai test
 ```
 
