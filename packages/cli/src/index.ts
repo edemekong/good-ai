@@ -29,7 +29,7 @@ export function createProgram(output: CliOutput = consoleOutput): Command {
   program
     .name("good-ai")
     .description("A local-first memory layer for successful AI interactions.")
-    .version("0.1.0")
+    .version("0.1.1")
     .option("--home <path>", "Override the Good-AI home directory")
     .option("--json", "Print machine-readable JSON where supported");
 
@@ -207,4 +207,4 @@ if (
   await main();
 }
 
-export const packageName = "good-ai" as const;
+export const packageName = "@thinkinteltech/good-ai" as const;

@@ -17,7 +17,8 @@ local persistence, search, retrieval, and reuse feedback.
 Requirements: Node.js 20+ and an MCP-capable AI client.
 
 ```bash
-npx good-ai install
+npm install --global @thinkinteltech/good-ai
+good-ai install
 good-ai doctor
 ```
 
