@@ -21,6 +21,9 @@ version.
   unless a future requirement explicitly changes that boundary.
 - Prefer small, composable changes and avoid adding external services or API
   dependencies without a clear product requirement.
+- Treat Codex as the current reference host for the client skill and local MCP
+  integration: repository guidance belongs in `AGENTS.md`, and the skill
+  contract belongs in `.agents/skills/<name>/SKILL.md`.
 
 ## Working practices
 

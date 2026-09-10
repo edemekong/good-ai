@@ -3,10 +3,10 @@
   "version": "0.1.0",
   "type": "module",
   "files": [
-    "GOOD_AI.md"
+    "skills"
   ],
   "scripts": {
-    "build": "node -e \"console.log('Skill package contains GOOD_AI.md')\"",
+    "build": "node -e \"console.log('Skill package contains skills/good-ai/SKILL.md')\"",
     "clean": "true",
     "test": "vitest run tests",
     "typecheck": "tsc --noEmit -p tsconfig.json",

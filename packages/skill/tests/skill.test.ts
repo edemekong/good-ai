@@ -1,9 +1,16 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 
-const skill = readFileSync(new URL("../GOOD_AI.md", import.meta.url), "utf8");
+const skill = readFileSync(
+  new URL("../skills/good-ai/SKILL.md", import.meta.url),
+  "utf8",
+);
 
 describe("Good-AI skill", () => {
+  it("uses the Codex skill contract", () => {
+    expect(skill).toMatch(/^---\nname: good-ai\ndescription: /u);
+  });
+
   it("documents the complete MCP lifecycle", () => {
     for (const tool of [
       "good_ai_search",

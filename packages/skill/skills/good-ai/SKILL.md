@@ -1,3 +1,8 @@
+---
+name: good-ai
+description: Search and record reusable successful AI experiences when a task may benefit from prior work or has produced a reusable lesson.
+---
+
 # Good-AI
 
 Good-AI remembers what works. It stores reusable lessons from successful AI

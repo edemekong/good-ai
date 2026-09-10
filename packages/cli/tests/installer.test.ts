@@ -64,4 +64,31 @@ describe("Good-AI installer", () => {
     });
     expect(JSON.parse(readFileSync(configPath, "utf8"))).toEqual(updated);
   });
+
+  it("registers Codex in TOML and preserves the entry on rerun", () => {
+    const userHome = mkdtempSync(join(tmpdir(), "good-ai-install-test-"));
+    temporaryDirectories.push(userHome);
+    const configPath = join(userHome, ".codex", "config.toml");
+    mkdirSync(join(userHome, ".codex"), { recursive: true });
+    writeFileSync(configPath, '[model]\nmodel = "gpt-5"\n');
+
+    const first = installGoodAi({ userHome });
+    const codex = first.clients.find((client) => client.name === "Codex");
+    expect(codex).toMatchObject({ detected: true, registered: true });
+    expect(readFileSync(configPath, "utf8")).toContain(
+      '[mcp_servers.good_ai]\ncommand = "good-ai"\nargs = ["mcp"]',
+    );
+
+    const second = installGoodAi({ userHome });
+    expect(
+      second.clients.find((client) => client.name === "Codex"),
+    ).toMatchObject({
+      detected: true,
+      registered: false,
+      reason: "Existing good-ai configuration preserved.",
+    });
+    expect(readFileSync(configPath, "utf8")).toMatch(
+      /\[mcp_servers\.good_ai\]/gu,
+    );
+  });
 });

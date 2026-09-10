@@ -22,9 +22,10 @@ good-ai doctor
 ```
 
 The installer creates `~/.good-ai`, initializes SQLite, writes the skill to
-`~/.good-ai/GOOD_AI.md`, and registers the MCP server in detected supported
-JSON client configurations. Existing configuration is preserved. Unsupported
-or invalid client configurations are reported without being rewritten.
+`~/.agents/skills/good-ai/SKILL.md`, and registers the MCP server in detected
+supported client configurations. Existing configuration is preserved.
+Unsupported or invalid client configurations are reported without being
+rewritten.
 
 Good-AI is ready when `doctor` reports the local database and migrations as
 ready.
@@ -102,9 +103,16 @@ Manual MCP configuration uses the command below:
 }
 ```
 
+## Codex integration
+
+Codex is the reference client for the first milestone because it supports the
+repository's `AGENTS.md` instructions, `.agents/skills` discovery, and local
+stdio MCP servers. Follow the complete [Codex integration guide](docs/integrations/codex.md).
+
 ## Skill behavior
 
-The installed skill is the behavioral layer in `packages/skill/GOOD_AI.md`.
+The installed skill is the behavioral layer in
+`packages/skill/skills/good-ai/SKILL.md`.
 It tells the host AI to search when historical approaches may materially help,
 capture only reusable successful lessons, and treat retrieved experiences as
 historical evidence rather than mandatory instructions.
@@ -158,7 +166,7 @@ packages/cli/
   src              CLI commands and installer
   tests            CLI and installer tests
 packages/skill/
-  GOOD_AI.md       Behavioral instructions installed for host AI clients
+  skills/good-ai   Codex-compatible Good-AI behavioral instructions
   tests            Skill contract tests
 ```
 
